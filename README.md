@@ -1,4 +1,4 @@
-#GPT-2 Chatbot Vietnamese
+# GPT-2 Chatbot Vietnamese
 
 ## Purpose
 This script demonstrates how to fine-tune a pre-trained GPT-2 model loaded from Hugging Face using a dataset of question-answer pairs extracted from individual conversations on Facebook in Vietnamese.
