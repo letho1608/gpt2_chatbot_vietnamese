@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Author: Mr.Jack _ Công ty www.BICweb.vn
-# Date: 24 August 2023
 import os
 import torch
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
@@ -9,9 +6,11 @@ from transformers import GPT2Tokenizer, GPT2LMHeadModel
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 
-# Load fine-tuned model and tokenizer from the final directory
+# Đường dẫn tuyệt đối đến thư mục cục bộ chứa mô hình và tokenizer đã fine-tuned
 output_dir = 'OneChatbotGPT2Vi/final'
 print(f"Loading fine-tuned GPT-2 model and tokenizer from {output_dir}...")
+
+# Load mô hình và tokenizer từ thư mục cục bộ
 model = GPT2LMHeadModel.from_pretrained(output_dir)
 tokenizer = GPT2Tokenizer.from_pretrained(output_dir)
 
@@ -25,7 +24,17 @@ def generate_answer(question, model, tokenizer, device):
     input_ids = tokenizer.encode(question, add_special_tokens=False, return_tensors='pt').to(device)
 
     # Generate the answer using the model
-    sample_output = model.generate(input_ids, pad_token_id=tokenizer.eos_token_id, eos_token_id=tokenizer.eos_token_id, max_length=256, do_sample=True, top_k=100, top_p=0.9, temperature=0.6)
+    sample_output = model.generate(
+        input_ids,
+        pad_token_id=tokenizer.eos_token_id,
+        eos_token_id=tokenizer.eos_token_id,
+        max_length=50,
+        num_return_sequences=1,
+        no_repeat_ngram_size=2,
+        top_k=50,
+        top_p=0.95,
+        temperature=0.7
+    )
 
     # Decode the answer using the tokenizer
     answer = tokenizer.decode(sample_output[0], skip_special_tokens=True)
